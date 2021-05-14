@@ -42,6 +42,7 @@ int main()
     treeTraverser = &myTree;
     myTree->insert(5,5, treeTraverser);
     myTree->insert(15, 15, treeTraverser);
+    myTree->insert(16, 15, treeTraverser);
 
     delete myTree;
 }
@@ -91,13 +92,13 @@ void treeNode::insert(int iKey, int iHash, treeNode** treeTraverser)
     else if ((*treeTraverser)->getData(myDataType::key) < iKey)
     {
         // insert right
-        treeTraverser = &this->rightLeaf;
+        treeTraverser = &(*treeTraverser)->rightLeaf;
         this->insert(iKey, iHash, treeTraverser);
     }
     else if ((*treeTraverser)->getData(myDataType::key) > iKey)
     {
         // insert left
-        treeTraverser = &this->leftLeaf;
+        treeTraverser = &(*treeTraverser)->leftLeaf;
         this->insert(iKey, iHash, treeTraverser);
     }
 }
