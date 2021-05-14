@@ -27,9 +27,10 @@ public:
     treeNode(int iKey, int iHashpointer, int iHeight);
     treeNode();
     ~treeNode();
-    treeNode*& getLeft() { return this->leftLeaf; };
-    treeNode*& getRight() { return this->rightLeaf; };
+    //treeNode*& getLeft() { return this->leftLeaf; };
+    //treeNode*& getRight() { return this->rightLeaf; };
     void insert(int iKey, int iHash, treeNode** treeTraverser);
+    void findKey(int iKey, treeNode* treeTraverser);
     int getData(myDataType DataValue);
     void setData(int apa){ key = apa; };
 };
@@ -43,6 +44,7 @@ int main()
     myTree->insert(5,5, treeTraverser);
     myTree->insert(15, 15, treeTraverser);
     myTree->insert(16, 15, treeTraverser);
+    myTree->findKey(2,nullptr);
 
     delete myTree;
 }
@@ -103,6 +105,23 @@ void treeNode::insert(int iKey, int iHash, treeNode** treeTraverser)
     }
 }
 
+void treeNode::findKey(int iKey, treeNode* treeTraverser)
+{
+    if (treeTraverser == nullptr)
+        treeTraverser = this;
+
+    if (iKey < treeTraverser->key && treeTraverser->leftLeaf != nullptr)
+        findKey(iKey, treeTraverser->leftLeaf);
+    else if (iKey > treeTraverser->key && treeTraverser->rightLeaf != nullptr)
+        findKey(iKey, treeTraverser->rightLeaf);
+    else if (iKey == treeTraverser->key)
+    {
+        cout << "Key found" << endl;
+    }
+    else
+        cout << "Key not found" << endl;
+}
+
 
 int treeNode::getData(myDataType DataValue)
 {
@@ -121,3 +140,4 @@ void getLine(string& inputString)
 
     getline(cin, inputString);
 }
+
