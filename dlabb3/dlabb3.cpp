@@ -39,8 +39,9 @@ int main()
     std::cout << "Hello World!\n";
     treeNode* myTree = new treeNode(10,-1,-1);
     treeNode** treeTraverser;
-    treeTraverser = &myTree->getLeft();
+    treeTraverser = &myTree;
     myTree->insert(5,5, treeTraverser);
+    myTree->insert(15, 15, treeTraverser);
 
     delete myTree;
 }
@@ -83,35 +84,22 @@ treeNode::~treeNode()
 
 void treeNode::insert(int iKey, int iHash, treeNode** treeTraverser)
 {   
-    cout << "dfsdasdsa" << endl;
-  //  (*treeTraverser)->setData(2);
-    // this works
-    //leftLeaf = new treeNode(iKey, iHash, -1);
-
-
-    //treeNode** fuckaduck;
-    //fuckaduck = treeTraverser->leftLeaf;
-
-    //*fuckaduck = new treeNode(iKey, iHash, -1);
-
-
-
     if ((*treeTraverser) == nullptr)
     {
         *treeTraverser = new treeNode(iKey, iHash, -1);
     }
-    //else if (treeTraverser->getData(myDataType::key) < iKey)
-    //{
-    //    // insert right
-    //    treeTraverser = this->getRight();
-    //    this->insert(iKey, iHash, treeTraverser);
-    //}
-    //else if (treeTraverser->getData(myDataType::key) > iKey)
-    //{
-    //    // insert left
-    //    treeTraverser = this->getLeft();
-    //    this->insert(iKey, iHash, treeTraverser);
-    //}
+    else if ((*treeTraverser)->getData(myDataType::key) < iKey)
+    {
+        // insert right
+        treeTraverser = &this->rightLeaf;
+        this->insert(iKey, iHash, treeTraverser);
+    }
+    else if ((*treeTraverser)->getData(myDataType::key) > iKey)
+    {
+        // insert left
+        treeTraverser = &this->leftLeaf;
+        this->insert(iKey, iHash, treeTraverser);
+    }
 }
 
 
