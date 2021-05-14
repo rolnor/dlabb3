@@ -27,17 +27,22 @@ public:
     treeNode(int iKey, int iHashpointer, int iHeight);
     treeNode();
     ~treeNode();
-    treeNode* getLeft() { return this->leftLeaf; };
-    treeNode* getRight() { return this->rightLeaf; };
-    void insert(treeNode& newNode);
-    void insertLeft(treeNode Left);
-    void insertRight(treeNode Right);
+    treeNode*& getLeft() { return this->leftLeaf; };
+    treeNode*& getRight() { return this->rightLeaf; };
+    void insert(int iKey, int iHash, treeNode** treeTraverser);
     int getData(myDataType DataValue);
+    void setData(int apa){ key = apa; };
 };
 
 int main()
 {
     std::cout << "Hello World!\n";
+    treeNode* myTree = new treeNode(10,-1,-1);
+    treeNode** treeTraverser;
+    treeTraverser = &myTree->getLeft();
+    myTree->insert(5,5, treeTraverser);
+
+    delete myTree;
 }
 
 treeNode::treeNode(int iKey, int iHashpointer, int iHeight)
@@ -60,27 +65,55 @@ treeNode::treeNode()
 
 treeNode::~treeNode()
 {
-    while (leftLeaf == nullptr || rightLeaf == nullptr)
+    while (leftLeaf != nullptr || rightLeaf != nullptr)
     {
         if (leftLeaf != nullptr)
+        {
             delete leftLeaf;
+            leftLeaf = nullptr;
+        }
+           
         if (rightLeaf != nullptr)
+        {
             delete rightLeaf;
+            rightLeaf = nullptr;
+        }
     }
 }
 
-void treeNode::insert(int iKey, int iHash)
-{
-    if()
+void treeNode::insert(int iKey, int iHash, treeNode** treeTraverser)
+{   
+    cout << "dfsdasdsa" << endl;
+  //  (*treeTraverser)->setData(2);
+    // this works
+    //leftLeaf = new treeNode(iKey, iHash, -1);
+
+
+    //treeNode** fuckaduck;
+    //fuckaduck = treeTraverser->leftLeaf;
+
+    //*fuckaduck = new treeNode(iKey, iHash, -1);
+
+
+
+    if ((*treeTraverser) == nullptr)
+    {
+        *treeTraverser = new treeNode(iKey, iHash, -1);
+    }
+    //else if (treeTraverser->getData(myDataType::key) < iKey)
+    //{
+    //    // insert right
+    //    treeTraverser = this->getRight();
+    //    this->insert(iKey, iHash, treeTraverser);
+    //}
+    //else if (treeTraverser->getData(myDataType::key) > iKey)
+    //{
+    //    // insert left
+    //    treeTraverser = this->getLeft();
+    //    this->insert(iKey, iHash, treeTraverser);
+    //}
 }
 
-void treeNode::insertLeft(treeNode Left)
-{
-}
-
-void treeNode::insertRight(treeNode Right)
-{
-}
 
 int treeNode::getData(myDataType DataValue)
 {
