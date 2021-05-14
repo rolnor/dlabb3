@@ -27,8 +27,6 @@ public:
     treeNode(int iKey, int iHashpointer, int iHeight);
     treeNode();
     ~treeNode();
-    //treeNode*& getLeft() { return this->leftLeaf; };
-    //treeNode*& getRight() { return this->rightLeaf; };
     void insert(int iKey, int iHash, treeNode** treeTraverser);
     void findKey(int iKey, treeNode* treeTraverser);
     int getData(myDataType DataValue);
