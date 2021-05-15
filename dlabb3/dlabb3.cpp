@@ -46,9 +46,9 @@ int main()
     treeNode** treeTraverser;
     treeTraverser = &myTree;
     myTree->insert(5,5, treeTraverser);
-    myTree->insert(14, 5, treeTraverser);
-    myTree->insert(3, 15, treeTraverser);
-    myTree->insert(1, 15, treeTraverser);
+    myTree->insert(12, 5, treeTraverser);
+    myTree->insert(13, 15, treeTraverser);
+    myTree->insert(14, 15, treeTraverser);
     myTree->findKey(3,nullptr);
 
  //   cout << endl << "Balanced: " << myTree->checkBalance() << endl;
@@ -142,8 +142,8 @@ int treeNode::checkBalance(treeNode** node)
         if (findHeight(this->leftLeaf->leftLeaf) >= findHeight(this->leftLeaf->rightLeaf))
             rotateWithLeftChild(node);
         else
-            doubleWithLeftChild(node);
-           // cout << "doubleWithLeftChild";
+          //  doubleWithLeftChild(node);
+            cout << "doubleWithLeftChild";
     else
         if (findHeight(this->rightLeaf) - findHeight(this->leftLeaf) > 1)
             if (findHeight(this->rightLeaf->rightLeaf) >= findHeight(this->rightLeaf->leftLeaf))
@@ -184,8 +184,8 @@ void treeNode::rotateWithRightChild(treeNode** k2)
 
 void treeNode::doubleWithLeftChild(treeNode** k3)
 {
-    treeNode** k4 = k3;
-    k4 = &(*k4)->rightLeaf;
+    treeNode** k4 = &(*k3)->leftLeaf;
+ //   k4 = &(*k4)->leftLeaf;
     rotateWithRightChild(k4);
     rotateWithLeftChild(k3);
 }
