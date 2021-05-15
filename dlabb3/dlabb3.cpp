@@ -29,10 +29,14 @@ public:
     ~treeNode();
     void insert(int iKey, int iHash, treeNode** treeTraverser);
     void findKey(int iKey, treeNode* treeTraverser);
+    void rotateWithLeftChild(treeNode** k2);
+    void rotateWithRightChild(treeNode** k2);
+    void doubleWithLeftChild(treeNode** k3);
     int getData(myDataType DataValue);
     int findMaxHeight(int a, int b);
     int findHeight(treeNode* node);
-    bool checkBalance(int balanceFactor = 1);
+    int checkBalance(treeNode** node);
+    void performBalance();
 };
 
 int main()
@@ -42,11 +46,12 @@ int main()
     treeNode** treeTraverser;
     treeTraverser = &myTree;
     myTree->insert(5,5, treeTraverser);
- //   myTree->insert(3, 15, treeTraverser);
- //   myTree->insert(2, 15, treeTraverser);
-    myTree->findKey(2,nullptr);
+    myTree->insert(14, 5, treeTraverser);
+    myTree->insert(3, 15, treeTraverser);
+    myTree->insert(1, 15, treeTraverser);
+    myTree->findKey(3,nullptr);
 
-    cout << endl << "Balanced: " << myTree->checkBalance() << endl;
+ //   cout << endl << "Balanced: " << myTree->checkBalance() << endl;
 
     delete myTree;
 }
@@ -112,6 +117,8 @@ void treeNode::insert(int iKey, int iHash, treeNode** treeTraverser)
     // recalculate height
     if ((*treeTraverser)->height != -1)
         (*treeTraverser)->height = 1 + findMaxHeight(findHeight((*treeTraverser)->leftLeaf), findHeight((*treeTraverser)->rightLeaf));
+
+    this->checkBalance(treeTraverser);
 }
 
 int treeNode::findMaxHeight(int a, int b) 
@@ -126,12 +133,73 @@ int treeNode::findHeight(treeNode* node)
     return node->height;
 }
 
-bool treeNode::checkBalance(int balanceFactor)
+int treeNode::checkBalance(treeNode** node)
 {
-    if (abs(findHeight(this->leftLeaf) - findHeight(this->rightLeaf)) > balanceFactor)
-        return false;
+    if (this == nullptr)
+        return 0;
+
+    if (findHeight(this->leftLeaf) - findHeight(this->rightLeaf) > 1)
+        if (findHeight(this->leftLeaf->leftLeaf) >= findHeight(this->leftLeaf->rightLeaf))
+            rotateWithLeftChild(node);
+        else
+            doubleWithLeftChild(node);
+           // cout << "doubleWithLeftChild";
     else
-        return true;
+        if (findHeight(this->rightLeaf) - findHeight(this->leftLeaf) > 1)
+            if (findHeight(this->rightLeaf->rightLeaf) >= findHeight(this->rightLeaf->leftLeaf))
+                rotateWithRightChild(node);
+               // cout << "rotateWithRightChild";
+            else
+                //doubleWithRightChild(t);
+                cout << "doubleWithRightChild";
+   
+    this->height = max(findHeight(this->leftLeaf), findHeight(this->rightLeaf)) + 1;
+
+
+        // junk return
+    return findHeight(this->leftLeaf) - findHeight(this->rightLeaf);
+}
+
+
+
+void treeNode::rotateWithLeftChild(treeNode** k2)
+{
+    treeNode* k1 = (*k2)->leftLeaf;
+    (*k2)->leftLeaf = k1->rightLeaf;
+    k1->rightLeaf = (*k2);
+    (*k2)->height = max(findHeight((*k2)->leftLeaf), findHeight((*k2)->rightLeaf)) + 1;
+    k1->height = max(findHeight(k1->leftLeaf), (*k2)->height) + 1;
+    (*k2) = k1;
+}
+
+void treeNode::rotateWithRightChild(treeNode** k2)
+{
+    treeNode* k1 = (*k2)->rightLeaf;
+    (*k2)->rightLeaf = k1->leftLeaf;
+    k1->leftLeaf = (*k2);
+    (*k2)->height = max(findHeight((*k2)->leftLeaf), findHeight((*k2)->rightLeaf)) + 1;
+    k1->height = max(findHeight(k1->leftLeaf), (*k2)->height) + 1;
+    (*k2) = k1;
+}
+
+void treeNode::doubleWithLeftChild(treeNode** k3)
+{
+    treeNode** k4 = k3;
+    k4 = &(*k4)->rightLeaf;
+    rotateWithRightChild(k4);
+    rotateWithLeftChild(k3);
+}
+
+void treeNode::performBalance()
+{
+  /*  int balance = this->checkBalance();
+
+     unbalanced left -> single rotation
+    if (balance > 1)
+        cout << "Left inbalance" << endl;
+    else if (balance < -1)
+        cout << "Right inbalance" << endl;
+         perform rotaion*/
 }
 
 void treeNode::findKey(int iKey, treeNode* treeTraverser)
