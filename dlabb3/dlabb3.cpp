@@ -24,14 +24,16 @@ private:
     treeNode* rightLeaf;
 
 public:
-    treeNode(int iKey, int iHashpointer, int iHeight);
+    treeNode(int iKey, int iHashpointer, int iHeight = 1);
     treeNode();
     ~treeNode();
-    void insert(int iKey, int iHash, int iHeight, treeNode** treeTraverser);
+    void insert(int iKey, int iHash, treeNode** treeTraverser);
     void findKey(int iKey, treeNode* treeTraverser);
     int getData(myDataType DataValue);
-    void setData(int apa){ key = apa; };
+ //   void setData(int apa){ key = apa; };
     int getHeight(treeNode* searchNode);
+    int findMaxHeight(int a, int b);
+    int findHeight(treeNode* node);
 };
 
 int main()
@@ -40,11 +42,10 @@ int main()
     treeNode* myTree = new treeNode(10,-1,-1);
     treeNode** treeTraverser;
     treeTraverser = &myTree;
-    myTree->insert(5,5, -1, treeTraverser);
-    myTree->insert(15, 15, -1, treeTraverser);
-    myTree->insert(16, 15, -1, treeTraverser);
-    myTree->insert(3, 15, -1, treeTraverser);
-    myTree->findKey(3,nullptr);
+    myTree->insert(5,5, treeTraverser);
+    myTree->insert(3, 15, treeTraverser);
+    myTree->insert(2, 15, treeTraverser);
+    myTree->findKey(2,nullptr);
 
     delete myTree;
 }
@@ -85,31 +86,43 @@ treeNode::~treeNode()
     }
 }
 
-void treeNode::insert(int iKey, int iHash, int iHeight, treeNode** treeTraverser)
+void treeNode::insert(int iKey, int iHash, treeNode** treeTraverser)
 {   
     if ((*treeTraverser) == nullptr)
     {
-        *treeTraverser = new treeNode(iKey, iHash, iHeight);
+        *treeTraverser = new treeNode(iKey, iHash);
     }
     else if ((*treeTraverser)->getData(myDataType::key) < iKey)
     {
         // insert right
-        //
         if((*treeTraverser)->rightLeaf != nullptr)
-            this->insert(iKey,iHash,iHeight+1, &(*treeTraverser)->rightLeaf);
+            this->insert(iKey,iHash, &(*treeTraverser)->rightLeaf);
         else
-            (*treeTraverser)->rightLeaf = new treeNode(iKey, iHash, iHeight + 1);
+            (*treeTraverser)->rightLeaf = new treeNode(iKey, iHash);
     }
     else if ((*treeTraverser)->getData(myDataType::key) > iKey)
     {
         // insert left
-        //treeTraverser = &(*treeTraverser)->leftLeaf;
+        if ((*treeTraverser)->leftLeaf != nullptr)
+            this->insert(iKey, iHash, &(*treeTraverser)->leftLeaf);
+        else
+            (*treeTraverser)->leftLeaf = new treeNode(iKey, iHash);   
+    } 
+    // recalculate height
+    if ((*treeTraverser)->height != -1)
+        (*treeTraverser)->height = 1 + findMaxHeight(findHeight((*treeTraverser)->leftLeaf), findHeight((*treeTraverser)->rightLeaf));
+}
 
-        if((*treeTraverser)->leftLeaf != nullptr)
-            this->insert(iKey, iHash, iHeight+1, &(*treeTraverser)->leftLeaf);
-        else 
-            (*treeTraverser)->leftLeaf = new treeNode(iKey, iHash, iHeight+1);
-    }
+int treeNode::findMaxHeight(int a, int b) 
+{
+    return (a > b) ? a : b;
+}
+
+int treeNode::findHeight(treeNode* node)
+{
+    if (node == nullptr)
+        return 0;
+    return node->height;
 }
 
 void treeNode::findKey(int iKey, treeNode* treeTraverser)
