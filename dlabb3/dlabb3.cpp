@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <string>
 
 using namespace std;
@@ -39,6 +39,12 @@ public:
     void performBalance();
 };
 
+//1. An insertion into the left subtree of the left child of α - DONE!
+//2. An insertion into the right subtree of the left child of α
+//3. An insertion into the left subtree of the right child of α
+//4. An insertion into the right subtree of the right child of α - DONE!
+
+
 int main()
 {
     std::cout << "Hello World!\n";
@@ -47,8 +53,8 @@ int main()
     treeTraverser = &myTree;
     myTree->insert(5,5, treeTraverser);
     myTree->insert(12, 5, treeTraverser);
-    myTree->insert(13, 15, treeTraverser);
-    myTree->insert(14, 15, treeTraverser);
+    myTree->insert(3, 15, treeTraverser);
+    myTree->insert(4, 15, treeTraverser);
     myTree->findKey(3,nullptr);
 
  //   cout << endl << "Balanced: " << myTree->checkBalance() << endl;
@@ -142,8 +148,8 @@ int treeNode::checkBalance(treeNode** node)
         if (findHeight(this->leftLeaf->leftLeaf) >= findHeight(this->leftLeaf->rightLeaf))
             rotateWithLeftChild(node);
         else
-          //  doubleWithLeftChild(node);
-            cout << "doubleWithLeftChild";
+            doubleWithLeftChild(node);
+          //  cout << "doubleWithLeftChild";
     else
         if (findHeight(this->rightLeaf) - findHeight(this->leftLeaf) > 1)
             if (findHeight(this->rightLeaf->rightLeaf) >= findHeight(this->rightLeaf->leftLeaf))
@@ -184,9 +190,10 @@ void treeNode::rotateWithRightChild(treeNode** k2)
 
 void treeNode::doubleWithLeftChild(treeNode** k3)
 {
-    treeNode** k4 = &(*k3)->leftLeaf;
+    treeNode* k4 = (*k3)->leftLeaf;
+    treeNode** k5 = &k4;
  //   k4 = &(*k4)->leftLeaf;
-    rotateWithRightChild(k4);
+    rotateWithRightChild(k5);
     rotateWithLeftChild(k3);
 }
 
