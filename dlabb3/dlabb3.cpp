@@ -30,10 +30,9 @@ public:
     void insert(int iKey, int iHash, treeNode** treeTraverser);
     void findKey(int iKey, treeNode* treeTraverser);
     int getData(myDataType DataValue);
- //   void setData(int apa){ key = apa; };
-    int getHeight(treeNode* searchNode);
     int findMaxHeight(int a, int b);
     int findHeight(treeNode* node);
+    bool checkBalance(int balanceFactor = 1);
 };
 
 int main()
@@ -43,9 +42,11 @@ int main()
     treeNode** treeTraverser;
     treeTraverser = &myTree;
     myTree->insert(5,5, treeTraverser);
-    myTree->insert(3, 15, treeTraverser);
-    myTree->insert(2, 15, treeTraverser);
+ //   myTree->insert(3, 15, treeTraverser);
+ //   myTree->insert(2, 15, treeTraverser);
     myTree->findKey(2,nullptr);
+
+    cout << endl << "Balanced: " << myTree->checkBalance() << endl;
 
     delete myTree;
 }
@@ -125,6 +126,14 @@ int treeNode::findHeight(treeNode* node)
     return node->height;
 }
 
+bool treeNode::checkBalance(int balanceFactor)
+{
+    if (abs(findHeight(this->leftLeaf) - findHeight(this->rightLeaf)) > balanceFactor)
+        return false;
+    else
+        return true;
+}
+
 void treeNode::findKey(int iKey, treeNode* treeTraverser)
 {
     if (treeTraverser == nullptr)
@@ -159,12 +168,4 @@ void getLine(string& inputString)
         cin.ignore();
 
     getline(cin, inputString);
-}
-
-
-int treeNode::getHeight(treeNode* searchNode)
-{
-    if (searchNode == NULL)
-        return 0;
-    return searchNode->height;
 }
