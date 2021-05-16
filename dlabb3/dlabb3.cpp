@@ -30,7 +30,6 @@ private:
     int height;
     treeNode* leftLeaf;
     treeNode* rightLeaf;
-    myTable linearTable;
 
 public:
     treeNode(int iKey, int iHashpointer, int iHeight = 1);
@@ -52,11 +51,18 @@ public:
 
 int main()
 {
-    myTimer MyTimer;
-    treeNode* myTree = new treeNode(3,-1,-1);
+    myTable linearTable;
     treeNode** treeTraverser;
+
+    myTimer MyTimer;
+    treeNode* myTree = new treeNode(3, linearTable.calculateHash("3", 100),-1);
     treeTraverser = &myTree;
-    int x, y;
+    string inputPos[20] = { "2","1","4","5","6","7","16","15","14","13","12","11","10","8","9" };
+    string inputData[20] = { "21","12","43","54","65","76","167","158","149","131","122","113","104","85","96" };
+    int i = 0;
+
+
+    int x, y,calcHash;
     char choise = ' ';
     string inputString = "";
     while (choise != '0')
@@ -71,16 +77,21 @@ int main()
             x = stoi(inputString);
             cout << "y: ";
             getLine(inputString);
-            y = stoi(inputString);
+            calcHash = linearTable.calculateHash(inputString, 100);
             MyTimer.start();
-            myTree->insert(x, y, treeTraverser);
+            myTree->insert(x, calcHash, treeTraverser);
+            linearTable.insert(inputString, calcHash);
             MyTimer.stop("Insert time: ");
             break;
         case '2':
             cout << endl << "Search: ";
             getLine(inputString);
             MyTimer.start();
-            cout << endl << "HashKey: " << myTree->findKey( stoi(inputString), nullptr) << endl;
+            calcHash = myTree->findKey(stoi(inputString), nullptr);
+            if (calcHash != -1)
+                cout << "Data: (x: " << inputString << " y: " << linearTable.getData(calcHash) << ")";
+            else
+                cout << endl << "Key not found" << endl;
             MyTimer.stop("Searchtime: ");
             break;
         case '3':
@@ -95,21 +106,16 @@ int main()
             cout << endl << endl;
             break;
         case '5':
-            myTree->insert(2, 2, treeTraverser);
-            myTree->insert(1, 1, treeTraverser);
-            myTree->insert(4, 4, treeTraverser);
-            myTree->insert(5, 5, treeTraverser);
-            myTree->insert(6, 5, treeTraverser);
-            myTree->insert(7, 7, treeTraverser);
-            myTree->insert(16, 16, treeTraverser);
-            myTree->insert(15, 15, treeTraverser);
-            myTree->insert(14, 14, treeTraverser);
-            myTree->insert(13, 13, treeTraverser);
-            myTree->insert(12, 12, treeTraverser);
-            myTree->insert(11, 11, treeTraverser);
-            myTree->insert(10, 10, treeTraverser);
-            myTree->insert(8, 8, treeTraverser);
-            myTree->insert(9, 9, treeTraverser);
+            i = 0;
+            for (string iPos : inputPos)
+            {
+                if (iPos == "")
+                    break;
+                calcHash = linearTable.calculateHash(iPos, 100);
+                myTree->insert(stoi(iPos), calcHash, treeTraverser);
+                linearTable.insert(inputData[i], calcHash);
+                i++;
+            }
             break;
         case '0':
             break;

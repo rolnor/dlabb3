@@ -187,7 +187,7 @@ int myTable::calculateHash(const string& key, int tableSize)
 
     for (char myChar : key)
     {
-        hashValue = myChar;//9;//37 * hashValue + myChar;
+        hashValue = 37 * hashValue + myChar;
     }
     return hashValue % tableSize;
 }

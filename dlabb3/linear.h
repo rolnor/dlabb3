@@ -16,6 +16,7 @@ public:
     void search(string& inputData, int hashLocation);
     void remove(string& inputData, int hashLocation);
     void repartition(int trueHash, int newHashLocation);
+    string getData(int hashLocation) { return data[hashLocation]; };
     int calculateHash(const string& key, int tableSize);
     void incCollisions();
     int getCollisions() { return collisions; };
