@@ -98,7 +98,9 @@ int main()
             cout << endl << "Remove: ";
             getLine(inputString);
             MyTimer.start();
+            calcHash = myTree->findKey(stoi(inputString), nullptr);
             myTree->remove(stoi(inputString), treeTraverser);
+            linearTable.remove(inputString, calcHash);
             MyTimer.stop("Remove time: ");
             break;
         case '4':
