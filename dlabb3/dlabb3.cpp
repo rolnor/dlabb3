@@ -230,6 +230,7 @@ void treeNode::checkBalance(treeNode** node)
 
 void treeNode::remove(int iKey, treeNode** node)
 {
+    bool notchecked = true;
     if (node == nullptr)
         return; 
 
@@ -245,12 +246,18 @@ void treeNode::remove(int iKey, treeNode** node)
     }
     else
     {
-        treeNode* oldNode = (*node);
-        *node = (&(*node)->leftLeaf != nullptr) ? (*node)->leftLeaf : (*node)->rightLeaf;
-        delete oldNode;
+        treeNode** oldNode = &(*node);
+        if ((*node)->leftLeaf != nullptr)
+            *node = (*node)->leftLeaf;
+        else *node = (*node)->rightLeaf;
+
+        delete *oldNode;
+        *oldNode = nullptr;
+        this->checkBalance(node);
+        notchecked = false;
     }
-    
-    this->checkBalance(node);
+    if(notchecked)
+        this->checkBalance(node);
 }
 
 
