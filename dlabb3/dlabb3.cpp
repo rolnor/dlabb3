@@ -32,8 +32,11 @@ public:
     void doubleWithLeftChild(treeNode** k3);
     void doubleWithRightChild(treeNode** k3);
     int findMaxHeight(int a, int b);
+    treeNode** findMinHeight(treeNode** node);
     int findHeight(treeNode* node);
     void checkBalance(treeNode** node);
+    void printTree(treeNode* treeTraverser);
+    void remove(int iKey, treeNode** node);
 };
 
 int main()
@@ -57,9 +60,23 @@ int main()
     myTree->insert(10, 10, treeTraverser);
     myTree->insert(8, 8, treeTraverser);
     myTree->insert(9, 9, treeTraverser);
-    myTree->findKey(3,nullptr);
+    myTree->remove(11,treeTraverser);
+    myTree->findKey(11,nullptr);
+    myTree->printTree(*treeTraverser);
 
     delete myTree;
+}
+
+
+void treeNode::printTree(treeNode* treeTraverser)
+{
+    if (treeTraverser->leftLeaf != nullptr)
+        printTree(treeTraverser->leftLeaf);
+
+    cout << treeTraverser->key << " ";
+
+    if (treeTraverser->rightLeaf != nullptr)
+        printTree(treeTraverser->rightLeaf);
 }
 
 treeNode::treeNode(int iKey, int iHashpointer, int iHeight)
@@ -114,6 +131,15 @@ int treeNode::findMaxHeight(int a, int b)
     return (a > b) ? a : b;
 }
 
+treeNode** treeNode::findMinHeight(treeNode** node)
+{
+    if ((*node) == nullptr)
+        return nullptr;
+    if ((*node)->leftLeaf == nullptr)
+        return node;
+    return findMinHeight(&(*node)->leftLeaf);
+}
+
 int treeNode::findHeight(treeNode* node)
 {
     if (node == nullptr)
@@ -123,7 +149,7 @@ int treeNode::findHeight(treeNode* node)
 
 void treeNode::checkBalance(treeNode** node)
 {
-    if (node == nullptr)
+    if ((*node) == nullptr)
         return;
 
     if (findHeight((*node)->leftLeaf) - findHeight((*node)->rightLeaf) > 1)
@@ -139,6 +165,31 @@ void treeNode::checkBalance(treeNode** node)
                 doubleWithRightChild(node);
    
     (*node)->height = max(findHeight((*node)->leftLeaf), findHeight((*node)->rightLeaf)) + 1;
+}
+
+void treeNode::remove(int iKey, treeNode** node)
+{
+    if (node == nullptr)
+        return; 
+
+    if (iKey < (*node)->key)
+        remove(iKey, &(*node)->leftLeaf);
+    else if ((*node)->key < iKey)
+        remove(iKey, &(*node)->rightLeaf);
+    else if ((*node)->leftLeaf != nullptr && (*node)->rightLeaf != nullptr)
+    {
+        treeNode** nextNode = &(*node)->rightLeaf;
+        (*node)->key = (*(findMinHeight(nextNode)))->key;
+        remove((*node)->key, nextNode);
+    }
+    else
+    {
+        treeNode* oldNode = (*node);
+        *node = (&(*node)->leftLeaf != nullptr) ? (*node)->leftLeaf : (*node)->rightLeaf;
+        delete oldNode;
+    }
+    
+    this->checkBalance(node);
 }
 
 
