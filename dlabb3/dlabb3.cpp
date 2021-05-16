@@ -1,10 +1,21 @@
 ﻿#include <iostream>
 #include <string>
+#include <chrono>
 
 using namespace std;
 
 // helper functions
 void getLine(string& inputString);
+void menu();
+
+class myTimer
+{
+    chrono::time_point<chrono::system_clock>  i_start, i_end;
+public:
+    void start();
+    void stop(std::string titleName);
+};
+
 
 struct Point2d
 {
@@ -26,7 +37,7 @@ public:
     treeNode();
     ~treeNode();
     void insert(int iKey, int iHash, treeNode** treeTraverser);
-    void findKey(int iKey, treeNode* treeTraverser);
+    int findKey(int iKey, treeNode* treeTraverser);
     void rotateWithLeftChild(treeNode** k2);
     void rotateWithRightChild(treeNode** k2);
     void doubleWithLeftChild(treeNode** k3);
@@ -41,30 +52,72 @@ public:
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    myTimer MyTimer;
     treeNode* myTree = new treeNode(3,-1,-1);
     treeNode** treeTraverser;
     treeTraverser = &myTree;
-    myTree->insert(2, 2, treeTraverser);
-    myTree->insert(1, 1, treeTraverser);
-    myTree->insert(4, 4, treeTraverser);
-    myTree->insert(5, 5, treeTraverser);
-    myTree->insert(6, 5, treeTraverser);
-    myTree->insert(7, 7, treeTraverser);
-    myTree->insert(16, 16, treeTraverser);
-    myTree->insert(15, 15, treeTraverser);
-    myTree->insert(14, 14, treeTraverser);
-    myTree->insert(13, 13, treeTraverser);
-    myTree->insert(12, 12, treeTraverser);
-    myTree->insert(11, 11, treeTraverser);
-    myTree->insert(10, 10, treeTraverser);
-    myTree->insert(8, 8, treeTraverser);
-    myTree->insert(9, 9, treeTraverser);
-    myTree->remove(11,treeTraverser);
-    myTree->findKey(11,nullptr);
-    myTree->printTree(*treeTraverser);
-
+    int x, y;
+    char choise = ' ';
+    string inputString = "";
+    while (choise != '0')
+    {
+        menu();
+        cin >> choise;
+        switch (choise)
+        {
+        case '1':
+            cout << endl << "Insert: (x,y)" << endl << "x: ";
+            getLine(inputString);
+            x = stoi(inputString);
+            cout << "y: ";
+            getLine(inputString);
+            y = stoi(inputString);
+            MyTimer.start();
+            myTree->insert(x, y, treeTraverser);
+            MyTimer.stop("Insert time: ");
+            break;
+        case '2':
+            cout << endl << "Search: ";
+            getLine(inputString);
+            MyTimer.start();
+            cout << endl << "HashKey: " << myTree->findKey( stoi(inputString), nullptr) << endl;
+            MyTimer.stop("Searchtime: ");
+            break;
+        case '3':
+            cout << endl << "Remove: ";
+            getLine(inputString);
+            MyTimer.start();
+            myTree->remove(stoi(inputString), treeTraverser);
+            MyTimer.stop("Remove time: ");
+            break;
+        case '4':
+            myTree->printTree(*treeTraverser);
+            cout << endl << endl;
+            break;
+        case '5':
+            myTree->insert(2, 2, treeTraverser);
+            myTree->insert(1, 1, treeTraverser);
+            myTree->insert(4, 4, treeTraverser);
+            myTree->insert(5, 5, treeTraverser);
+            myTree->insert(6, 5, treeTraverser);
+            myTree->insert(7, 7, treeTraverser);
+            myTree->insert(16, 16, treeTraverser);
+            myTree->insert(15, 15, treeTraverser);
+            myTree->insert(14, 14, treeTraverser);
+            myTree->insert(13, 13, treeTraverser);
+            myTree->insert(12, 12, treeTraverser);
+            myTree->insert(11, 11, treeTraverser);
+            myTree->insert(10, 10, treeTraverser);
+            myTree->insert(8, 8, treeTraverser);
+            myTree->insert(9, 9, treeTraverser);
+            break;
+        case '0':
+            break;
+        }
+    }
     delete myTree;
+    return 0;
+
 }
 
 
@@ -228,7 +281,7 @@ void treeNode::doubleWithRightChild(treeNode** k3)
     rotateWithRightChild(k3);
 }
 
-void treeNode::findKey(int iKey, treeNode* treeTraverser)
+int treeNode::findKey(int iKey, treeNode* treeTraverser)
 {
     if (treeTraverser == nullptr)
         treeTraverser = this;
@@ -240,9 +293,14 @@ void treeNode::findKey(int iKey, treeNode* treeTraverser)
     else if (iKey == treeTraverser->key)
     {
         cout << "Key found" << endl;
+        return treeTraverser->hashPointer;
     }
     else
+    {
         cout << "Key not found" << endl;
+        return -1;
+    }
+        
 }
 
 void getLine(string& inputString)
@@ -251,4 +309,26 @@ void getLine(string& inputString)
         cin.ignore();
 
     getline(cin, inputString);
+}
+
+void myTimer::start()
+{
+    i_start = std::chrono::system_clock::now();
+}
+
+void myTimer::stop(string titleName)
+{
+    i_end = std::chrono::system_clock::now();
+    auto totalTime = i_end - i_start;
+    cout << endl << endl << titleName << " :" << std::chrono::duration_cast<std::chrono::nanoseconds>(totalTime).count() << " nanoseconds" << endl;
+}
+
+void menu()
+{
+    cout << "1. Insert" << endl;
+    cout << "2. Search" << endl;
+    cout << "3. Remove" << endl;
+    cout << "4. Print" << endl;
+    cout << "5. Fill data" << endl;
+    cout << "0. Quit " << endl;
 }
