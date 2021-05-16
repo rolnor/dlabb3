@@ -72,13 +72,14 @@ int main()
         switch (choise)
         {
         case '1':
+
             cout << endl << "Insert: (x,y)" << endl << "x: ";
             getLine(inputString);
             x = stoi(inputString);
             cout << "y: ";
             getLine(inputString);
-            calcHash = linearTable.calculateHash(inputString, 100);
             MyTimer.start();
+            calcHash = linearTable.calculateHash(inputString, 100);
             myTree->insert(x, calcHash, treeTraverser);
             linearTable.insert(inputString, calcHash);
             MyTimer.stop("Insert time: ");
@@ -99,8 +100,11 @@ int main()
             getLine(inputString);
             MyTimer.start();
             calcHash = myTree->findKey(stoi(inputString), nullptr);
-            myTree->remove(stoi(inputString), treeTraverser);
-            linearTable.remove(inputString, calcHash);
+            if (calcHash != -1)
+            {
+                myTree->remove(stoi(inputString), treeTraverser);
+                linearTable.remove(inputString, calcHash);
+            }
             MyTimer.stop("Remove time: ");
             break;
         case '4':
@@ -259,8 +263,6 @@ void treeNode::remove(int iKey, treeNode** node)
     if(notchecked)
         this->checkBalance(node);
 }
-
-
 
 void treeNode::rotateWithLeftChild(treeNode** k2)
 {
