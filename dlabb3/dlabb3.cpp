@@ -58,10 +58,10 @@ int main()
     myTree->insert(1, 1, treeTraverser);
     myTree->insert(4, 4, treeTraverser);
     myTree->insert(5, 5, treeTraverser);
- //   myTree->insert(6, 5, treeTraverser);
- //   myTree->insert(15, 5, treeTraverser);
- //   myTree->insert(5, 15, treeTraverser);
- ////   myTree->insert(14, 15, treeTraverser);
+    myTree->insert(6, 5, treeTraverser);
+    myTree->insert(7, 7, treeTraverser);
+    myTree->insert(16, 16, treeTraverser);
+    myTree->insert(15, 15, treeTraverser);
  //   myTree->insert(16, 15, treeTraverser);
  // //  myTree->insert(12, 15, treeTraverser);
  // //  myTree->insert(13, 15, treeTraverser);
@@ -178,19 +178,15 @@ void treeNode::rotateWithRightChild(treeNode** k2)
 
 void treeNode::doubleWithLeftChild(treeNode** k3)
 {
-    treeNode* k4 = (*k3)->leftLeaf;
-    treeNode** k5 = &k4;
- //   k4 = &(*k4)->leftLeaf;
-    rotateWithRightChild(k5);
+    treeNode** k4 = &(*k3)->leftLeaf;
+    rotateWithRightChild(k4);
     rotateWithLeftChild(k3);
 }
 
 void treeNode::doubleWithRightChild(treeNode** k3)
 {
-    treeNode* k4 = (*k3)->rightLeaf;
-    treeNode** k5 = &k4;
-    //   k4 = &(*k4)->leftLeaf;
-    rotateWithLeftChild(k5);
+    treeNode** k4 = &(*k3)->rightLeaf;
+    rotateWithLeftChild(k4);
     rotateWithRightChild(k3);
 }
 
