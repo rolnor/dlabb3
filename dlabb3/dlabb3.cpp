@@ -24,7 +24,7 @@ private:
     treeNode* rightLeaf;
 
 public:
-    treeNode(int iKey, int iHashpointer, int iHeight = 0);
+    treeNode(int iKey, int iHashpointer, int iHeight = 1);
     treeNode();
     ~treeNode();
     void insert(int iKey, int iHash, treeNode** treeTraverser);
@@ -57,7 +57,7 @@ int main()
     myTree->insert(2, 2, treeTraverser);
     myTree->insert(1, 1, treeTraverser);
     myTree->insert(4, 4, treeTraverser);
- //   myTree->insert(5, 5, treeTraverser);
+    myTree->insert(5, 5, treeTraverser);
  //   myTree->insert(6, 5, treeTraverser);
  //   myTree->insert(15, 5, treeTraverser);
  //   myTree->insert(5, 15, treeTraverser);
@@ -136,22 +136,22 @@ void treeNode::checkBalance(treeNode** node)
     if (node == nullptr)
         return;
 
-    if (findHeight(this->leftLeaf) - findHeight(this->rightLeaf) > 1)
-        if (findHeight(this->leftLeaf->leftLeaf) >= findHeight(this->leftLeaf->rightLeaf))
+    if (findHeight((*node)->leftLeaf) - findHeight((*node)->rightLeaf) > 1)
+        if (findHeight((*node)->leftLeaf->leftLeaf) >= findHeight((*node)->leftLeaf->rightLeaf))
             rotateWithLeftChild(node);
         else
-          //  doubleWithLeftChild(node);
-            cout << "doubleWithLeftChild";
+            doubleWithLeftChild(node);
+          //  cout << "doubleWithLeftChild";
     else
-        if (findHeight(this->rightLeaf) - findHeight(this->leftLeaf) > 1)
-            if (findHeight(this->rightLeaf->rightLeaf) >= findHeight(this->rightLeaf->leftLeaf))
+        if (findHeight((*node)->rightLeaf) - findHeight((*node)->leftLeaf) > 1)
+            if (findHeight((*node)->rightLeaf->rightLeaf) >= findHeight((*node)->rightLeaf->leftLeaf))
                 rotateWithRightChild(node);
               //  cout << "rotateWithRightChild";
             else
-                //doubleWithRightChild(node);
-                cout << "doubleWithRightChild";
+                doubleWithRightChild(node);
+                //cout << "doubleWithRightChild";
    
-    (*node)->height = max(findHeight(this->leftLeaf), findHeight(this->rightLeaf)) + 1;
+    (*node)->height = max(findHeight((*node)->leftLeaf), findHeight((*node)->rightLeaf)) + 1;
 }
 
 
@@ -169,8 +169,8 @@ void treeNode::rotateWithLeftChild(treeNode** k2)
 void treeNode::rotateWithRightChild(treeNode** k2)
 {
     treeNode* k1 = (*k2)->rightLeaf;
-    (*k2)->rightLeaf = k1->rightLeaf;
-    k1->rightLeaf = (*k2);
+    (*k2)->rightLeaf = k1->leftLeaf;
+    k1->leftLeaf = (*k2);
     (*k2)->height = max(findHeight((*k2)->leftLeaf), findHeight((*k2)->rightLeaf)) + 1;
     k1->height = max(findHeight(k1->leftLeaf), (*k2)->height) + 1;
     (*k2) = k1;
