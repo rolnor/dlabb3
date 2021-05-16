@@ -18,5 +18,13 @@
     <ClCompile Include="dlabb3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="linear.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="linear.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

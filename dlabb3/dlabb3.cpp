@@ -1,5 +1,4 @@
-﻿#include <iostream>
-#include <string>
+﻿#include "linear.h"
 #include <chrono>
 
 using namespace std;
@@ -31,6 +30,7 @@ private:
     int height;
     treeNode* leftLeaf;
     treeNode* rightLeaf;
+    myTable linearTable;
 
 public:
     treeNode(int iKey, int iHashpointer, int iHeight = 1);
