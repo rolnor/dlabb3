@@ -15,13 +15,6 @@ public:
     void stop(std::string titleName);
 };
 
-
-struct Point2d
-{
-    int x;
-    int y;
-};
-
 class treeNode
 {
 private:
@@ -62,7 +55,7 @@ int main()
     int i = 0;
 
 
-    int x, y,calcHash;
+    int x, calcHash;
     char choise = ' ';
     string inputString = "";
     while (choise != '0')
