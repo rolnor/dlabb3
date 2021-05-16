@@ -3,8 +3,6 @@
 
 using namespace std;
 
-enum class myDataType { key, hashPointer, height };
-
 // helper functions
 void getLine(string& inputString);
 
@@ -33,20 +31,10 @@ public:
     void rotateWithRightChild(treeNode** k2);
     void doubleWithLeftChild(treeNode** k3);
     void doubleWithRightChild(treeNode** k3);
-    int getData(myDataType DataValue);
     int findMaxHeight(int a, int b);
     int findHeight(treeNode* node);
     void checkBalance(treeNode** node);
 };
-
-
-// TODO!! Fix load calculation 
-
-//1. An insertion into the left subtree of the left child of α - DONE!
-//2. An insertion into the right subtree of the left child of α
-//3. An insertion into the left subtree of the right child of α
-//4. An insertion into the right subtree of the right child of α - DONE!
-
 
 int main()
 {
@@ -70,8 +58,6 @@ int main()
     myTree->insert(8, 8, treeTraverser);
     myTree->insert(9, 9, treeTraverser);
     myTree->findKey(3,nullptr);
-
- //   cout << endl << "Balanced: " << myTree->checkBalance() << endl;
 
     delete myTree;
 }
@@ -145,15 +131,12 @@ void treeNode::checkBalance(treeNode** node)
             rotateWithLeftChild(node);
         else
             doubleWithLeftChild(node);
-          //  cout << "doubleWithLeftChild";
     else
         if (findHeight((*node)->rightLeaf) - findHeight((*node)->leftLeaf) > 1)
             if (findHeight((*node)->rightLeaf->rightLeaf) >= findHeight((*node)->rightLeaf->leftLeaf))
                 rotateWithRightChild(node);
-              //  cout << "rotateWithRightChild";
             else
                 doubleWithRightChild(node);
-                //cout << "doubleWithRightChild";
    
     (*node)->height = max(findHeight((*node)->leftLeaf), findHeight((*node)->rightLeaf)) + 1;
 }
@@ -209,17 +192,6 @@ void treeNode::findKey(int iKey, treeNode* treeTraverser)
     }
     else
         cout << "Key not found" << endl;
-}
-
-
-int treeNode::getData(myDataType DataValue)
-{
-    if(DataValue == myDataType::key)
-        return this->key;
-    else if (DataValue == myDataType::height)
-        return this->height;
-    else 
-        return this->hashPointer;
 }
 
 void getLine(string& inputString)
