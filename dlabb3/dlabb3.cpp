@@ -62,9 +62,13 @@ int main()
     myTree->insert(7, 7, treeTraverser);
     myTree->insert(16, 16, treeTraverser);
     myTree->insert(15, 15, treeTraverser);
- //   myTree->insert(16, 15, treeTraverser);
- // //  myTree->insert(12, 15, treeTraverser);
- // //  myTree->insert(13, 15, treeTraverser);
+    myTree->insert(14, 14, treeTraverser);
+    myTree->insert(13, 13, treeTraverser);
+    myTree->insert(12, 12, treeTraverser);
+    myTree->insert(11, 11, treeTraverser);
+    myTree->insert(10, 10, treeTraverser);
+    myTree->insert(8, 8, treeTraverser);
+    myTree->insert(9, 9, treeTraverser);
     myTree->findKey(3,nullptr);
 
  //   cout << endl << "Balanced: " << myTree->checkBalance() << endl;
